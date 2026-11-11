@@ -65,11 +65,10 @@ img{display:block;max-width:100%}
 .lions .ch{display:inline-block;opacity:0;transform:translateY(40px) scale(.6)}
 .lions.go .ch{animation:roar .55s cubic-bezier(.2,1.5,.4,1) forwards}
 @keyframes roar{60%{opacity:1;transform:translateY(-8px) scale(1.12)}100%{opacity:1;transform:none}}
-.claw{position:absolute;inset:-6% -4%;width:108%;height:112%;pointer-events:none;overflow:visible}
-.claw path{fill:none;stroke:var(--cream);stroke-width:5;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-dasharray:600;stroke-dashoffset:600;opacity:.85}
-.lions.go .claw path{animation:scratch .28s cubic-bezier(.6,0,.3,1) forwards}
-.lions.go .claw path:nth-child(1){animation-delay:.95s}.lions.go .claw path:nth-child(2){animation-delay:1.02s}.lions.go .claw path:nth-child(3){animation-delay:1.09s}
-@keyframes scratch{to{stroke-dashoffset:0}}
+.claw{position:absolute;inset:-8% -3%;width:106%;height:116%;pointer-events:none;overflow:visible}
+.gash .mk{fill:none;stroke:#fff;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1}
+.gash.go .mk{animation:gashDraw .2s cubic-bezier(.7,0,.3,1) forwards}
+@keyframes gashDraw{to{stroke-dashoffset:0}}
 .hero.shake .hgrid{animation:shake .35s linear 1.05s}
 @keyframes shake{20%{translate:-6px 3px}40%{translate:5px -4px}60%{translate:-3px 2px}80%{translate:2px -1px}}
 .slogan{font-family:var(--ar);font-size:clamp(28px,4vw,44px);line-height:1.3;color:var(--cream);margin:18px 0 6px;direction:rtl;text-align:start}
@@ -256,7 +255,7 @@ html[dir=rtl] .mi .pr{text-align:left}
         <p class="kick fade d0" id="kick"><i></i><span id="kickTxt"></span></p>
         <div class="home-of fade d0" data-k="homeOf">HOME OF</div>
         <h1 class="lions" id="lions" dir="ltr" aria-label="Lions"><span class="w"></span>
-          <svg class="claw" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M20 8 L46 92"/><path d="M38 4 L64 96"/><path d="M56 8 L82 92"/></svg>
+          <svg class="claw gash" id="lclaw" aria-hidden="true"></svg>
         </h1>
         <p class="slogan fade d1">أطيب لقمه فيكي يا بيروت</p>
         <p class="hsub fade d2" data-k="hsub">Smash burgers, crispy chicken w loaded fries. Bel bayt el 2adim, Msaytbeh.</p>
@@ -271,10 +270,10 @@ html[dir=rtl] .mi .pr{text-align:left}
             <text><textPath href="#ring">★ HOME OF LIONS ★ BURGERS AND MORE ★ MSAYTBEH BEIRUT </textPath></text></svg>
           <div class="logo"><img src="assets/logo.jpg" alt=""></div>
         </div>
-        <div class="food f1" data-d="1.2" data-ph="Mushtruffle">🍔</div>
-        <div class="food f2" data-d="-.8" data-ph="Toto's Tray (3Ts)">🍗</div>
-        <div class="food f3" data-d="1.6" data-ph="The GM">🍟</div>
-        <div class="food f4" data-d="-1.2" data-ph="Mozzarella PULL">🧀</div>
+        <div class="food f1" data-d="1.2" data-ph="Mushtruffle"></div>
+        <div class="food f2" data-d="-.8" data-ph="Toto's Tray (3Ts)"></div>
+        <div class="food f3" data-d="1.6" data-ph="The GM"></div>
+        <div class="food f4" data-d="-1.2" data-ph="Mozzarella PULL"></div>
       </div>
     </div>
   </header>
@@ -370,7 +369,7 @@ html[dir=rtl] .mi .pr{text-align:left}
 (() => {
   const MENU = [{"cat": "Starters", "items": [{"n": "Wedges Fries", "p": 5.5, "u": "https://take.app/totosjoint/p/cmq9kig9t002304ky3je9minu", "o": null, "w": null, "d": "Seasoned wedges fries served with sauce of your choice."}, {"n": "Mozzarella PULL", "p": 8.0, "u": "https://take.app/totosjoint/p/cmkmmrrvh000t04jpld19mmh7", "o": null, "w": null, "d": "3 pcs of mozzarella pull dipped in GM or smoked BBQ, served with ranch dressing."}, {"n": "French Fries", "p": 4.0, "u": "https://take.app/totosjoint/p/cly8ms32t00017kapcyf640w8", "o": null, "w": null, "d": "Imported french fries served with ketchup."}, {"n": "Loaded Truffle", "p": 11.5, "u": "https://take.app/totosjoint/p/cmp1btyku000j07htmm1gwpx4", "o": null, "w": null, "d": "Imported fries with fresh mushrooms, caramelized onions, smashed beef patty (65 g), Emmental cheese…"}, {"n": "Curly Fries", "p": 6.0, "u": "https://take.app/totosjoint/p/cly8mtugu0006h8mcl61nbl1i", "o": null, "w": null, "d": "Seasoned curly fries served with honey mustard and cheddar cheese."}, {"n": "Jalapenos Cheddar TNT", "p": 5.5, "u": "https://take.app/totosjoint/p/clyh0nri8000odqln2ehoblhj", "o": null, "w": null, "d": "4 pcs, served with sauce of your choice."}, {"n": "Real Deal Curly Fries", "p": 11.5, "u": "https://take.app/totosjoint/p/cmugr4426002u0agm943k0x6k", "o": null, "w": null, "d": "Chicken strips (2), mozzarella sticks (2), jalapeño cheddar TNT (2) and a load of curly fries…"}, {"n": "Chicken Wings", "p": 7.5, "u": "https://take.app/totosjoint/p/clyhog1nu002yhr4f85n0jo4k", "o": null, "w": null, "d": "10 pcs dipped in your choice of sauces."}, {"n": "Wings Family Combo", "p": 23.0, "u": "https://take.app/totosjoint/p/cmpchlfve00030bj6kqapt95s", "o": null, "w": null, "d": "35 pcs of wings with 5 signature sauces and fries."}, {"n": "Triple Cheese Balls", "p": 5.5, "u": "https://take.app/totosjoint/p/cly8mw5w60022w01527o3786b", "o": null, "w": null, "d": "4 pieces, served with sauce of your choice."}, {"n": "Toto's Tray (3Ts)", "p": 29.5, "u": "https://take.app/totosjoint/p/cmq288f3z000m0ajhi6e8bd4x", "o": 35.0, "w": null, "d": "Wings (5), strips (5), onion rings (5), mozzarella pull (2), jalapeño TNT and more."}, {"n": "Loaded Fries", "p": 7.0, "u": "https://take.app/totosjoint/p/clyh0pze4001sv4e7whqvznzc", "o": null, "w": null, "d": "Imported french fries with honey mustard, ranch, cheddar cheese and homemade smoked BBQ."}, {"n": "Mozzarella Sticks", "p": 5.25, "u": "https://take.app/totosjoint/p/clyh0mfhw001tkmxgbux2i9r3", "o": null, "w": null, "d": "4 pcs, served with sauce of your choice."}, {"n": "Loaded Fries With Extra Chicken", "p": 10.5, "u": "https://take.app/totosjoint/p/clyhnng6e0004ni1k1j0z6w5w", "o": null, "w": null, "d": "Loaded fries with honey mustard, ranch, cheddar and homemade smoked BBQ, plus extra chicken."}, {"n": "The Real Deal", "p": 9.0, "u": "https://take.app/totosjoint/p/cly8myecc002030tigydu2a43", "o": null, "w": null, "d": "Chicken strips (2), mozzarella sticks (2), jalapeño cheddar TNT (2) and a load of fries…"}, {"n": "Onion Rings", "p": 5.0, "u": "https://take.app/totosjoint/p/cly8muxt0002h7un0dxgp480h", "o": null, "w": null, "d": "Served with homemade BBQ sauce."}, {"n": "Loaded Beef", "p": 10.5, "u": "https://take.app/totosjoint/p/cmp1c30qh000007jpxic0ii5i", "o": null, "w": null, "d": "Imported fries with smashed beef patty (65 g), cheddar slice, dill pickles, jalapeños, BBQ sauce…"}, {"n": "Finger Dynamite", "p": 3.0, "u": "https://take.app/totosjoint/p/cmtocnm3y00000agm2q8y66qg", "o": null, "w": null, "d": ""}, {"n": "Bang Bang Chicken", "p": 7.5, "u": "https://take.app/totosjoint/p/cly8mpwrc0039yryorajc9ocl", "o": null, "w": null, "d": ""}, {"n": "Bang Bang Shrimps", "p": 8.5, "u": "https://take.app/totosjoint/p/cly8mlrq6000s7un0qb9h16go", "o": null, "w": null, "d": ""}]}, {"cat": "New", "items": [{"n": "Limonata", "p": 4.0, "u": "https://take.app/totosjoint/p/cmruk39ie00020ajijiidhg4g", "o": null, "w": null, "d": ""}]}, {"cat": "Wraps & Ciabatta", "items": [{"n": "Mighty Munch Cheese Steak", "p": 11.0, "u": "https://take.app/totosjoint/p/cm09ts9jv001g3nffe3x05hnw", "o": null, "w": null, "d": "Grilled ribeye steak, caramelized onion, green peppers, fresh mushroom, mozzarella, Swiss…"}, {"n": "Beiruty Wrap", "p": 8.0, "u": "https://take.app/totosjoint/p/cm9hezen7000qjx042jdfm81i", "o": null, "w": null, "d": "180 g of grilled chicken, shredded iceberg, tomato, pickles and mozzarella cheese drizzle…"}]}, {"cat": "Chicken Burgers", "items": [{"n": "The GM", "p": 9.75, "u": "https://take.app/totosjoint/p/cly8meu0d000p2ah75i3f7o4w", "o": null, "w": null, "d": "Fried chicken breast, 150 g mozzarella patty, coleslaw, shredded iceberg, dill pickles, homemade mayo…"}, {"n": "Day Dreamer", "p": 9.5, "u": "https://take.app/totosjoint/p/clyj4xi6b000r13hm41i4drs7", "o": null, "w": null, "d": "Fried chicken breast, truffle sauce, dill pickles, Swiss cheese, parmesan, fresh mushrooms…"}, {"n": "The Cheesy", "p": 9.75, "u": "https://take.app/totosjoint/p/cly7pcj7b009ial9017q5rlhv", "o": null, "w": null, "d": "Fried chicken breast, mozzarella patty, melted cheddar, shredded iceberg, dill pickles and Toto's sauce…"}, {"n": "Dip It Honey Mustard", "p": 9.0, "u": "https://take.app/totosjoint/p/cly8mgv1k0005j3o9pfz55e29", "o": null, "w": null, "d": "Fried chicken breast dipped in homemade honey mustard, shredded iceberg, dill pickles, homemade mayo…"}, {"n": "Honey Glazed", "p": 9.0, "u": "https://take.app/totosjoint/p/clyj550nk000u6i61wgwx0qc0", "o": null, "w": null, "d": ""}, {"n": "Ranch Chicken", "p": 9.25, "u": "https://take.app/totosjoint/p/cm0uuse9t000dohwu8ks1xzsu", "o": null, "w": null, "d": ""}, {"n": "BBQ Chicken", "p": 8.5, "u": "https://take.app/totosjoint/p/clyhn9oeo002j11ukh0foko9l", "o": null, "w": null, "d": ""}, {"n": "Charcoaled Chicken", "p": 8.5, "u": "https://take.app/totosjoint/p/clyhnb1z6002jsrad7sy1n4eo", "o": null, "w": null, "d": ""}, {"n": "The Classic", "p": 8.5, "u": "https://take.app/totosjoint/p/clyhncv9s0006yq4lmpxe46ie", "o": null, "w": null, "d": ""}, {"n": "Nashville Hot Honey", "p": 9.0, "u": "https://take.app/totosjoint/p/cm9y3r3o2006ejt04bf6q2cno", "o": null, "w": null, "d": ""}, {"n": "Dynamite Chicken", "p": 9.0, "u": "https://take.app/totosjoint/p/cmk2qcgtx0017ky04dlhhy2on", "o": null, "w": null, "d": ""}, {"n": "Chicken Chipotle", "p": 9.75, "u": "https://take.app/totosjoint/p/cmr0gxbxc00010ahvykt95epw", "o": null, "w": null, "d": ""}]}, {"cat": "Beef Burgers", "items": [{"n": "Mushtruffle", "p": 10.5, "u": "https://take.app/totosjoint/p/clygag27g0001sovz3w81iyop", "o": null, "w": "125 g", "d": "Prime Angus beef patty, creamy mushtruffle gravy, Swiss cheese, caramelized onions…"}, {"n": "Signature Swiss", "p": 10.5, "u": "https://take.app/totosjoint/p/clyhox0x600069j7mome3acqn", "o": null, "w": "125 g", "d": "Prime Angus beef patty, crispy onions, grilled fresh mushrooms, Swiss and provolone cheese…"}, {"n": "The Chili", "p": 11.5, "u": "https://take.app/totosjoint/p/clygal7f6000cf1zvy7qrpsjp", "o": null, "w": "125 g", "d": "Prime Angus beef patty, cheddar cheese, shredded iceberg, tomato, homemade chili beef gravy…"}, {"n": "Triple Double Cheese", "p": 16.5, "u": "https://take.app/totosjoint/p/cmk2pss1d000rlh04n8jbgu8x", "o": null, "w": null, "d": "Triple prime Angus patties, 100 g cheddar cheese, dill pickles, Toto's sauce, brioche bun."}, {"n": "Smash It", "p": 9.5, "u": "https://take.app/totosjoint/p/clygam0e7000jf1zv835wpqca", "o": null, "w": "125 g", "d": ""}, {"n": "Double Cheese", "p": 13.5, "u": "https://take.app/totosjoint/p/clyj4l29u00dzn6tj4mczh3xg", "o": null, "w": "250 g", "d": ""}, {"n": "Say Cheese", "p": 10.75, "u": "https://take.app/totosjoint/p/clygannhu0009gshat9k7jd2t", "o": null, "w": "125 g", "d": ""}, {"n": "Vintage", "p": 9.25, "u": "https://take.app/totosjoint/p/clygajlw20003f1zvqv0w1ab3", "o": null, "w": "125 g", "d": ""}, {"n": "Pineapple Double Smash", "p": 10.75, "u": "https://take.app/totosjoint/p/cmgs9kzhx0005jp04tubl3kcg", "o": null, "w": null, "d": ""}, {"n": "The BBQ", "p": 9.0, "u": "https://take.app/totosjoint/p/clygaki1h003bajdeia5g0yxc", "o": null, "w": "125 g", "d": ""}, {"n": "Lebanese", "p": 7.75, "u": "https://take.app/totosjoint/p/clygah5xf0002qnz7ybu3phga", "o": null, "w": "125 g", "d": ""}]}, {"cat": "Meals", "items": [{"n": "Strips Dose (regular or spicy)", "p": 12.5, "u": "https://take.app/totosjoint/p/clyh0uj2m001h13fyc6yonq1w", "o": null, "w": null, "d": "Bucket of 4 chicken strips with fries, brioche bun, coleslaw, pickles, jalapeños and two homemade sauces…"}, {"n": "Family Combo", "p": 30.5, "u": "https://take.app/totosjoint/p/cmpfbg7tc00050bjgt7ox5qfm", "o": null, "w": null, "d": "Chicken strips (15 pcs), fries (4), buns (4), pickles and your choice of eight sauces."}]}, {"cat": "Combos", "items": [{"n": "Toto's Combo", "p": 17.5, "u": "https://take.app/totosjoint/p/cmk2q6zlq000hl1046uxmnpmn", "o": null, "w": null, "d": "Any single burger, 2 chicken strips, 2 mozzarella brix and French fries, served with 2 sauces…"}, {"n": "Wings Family Combo", "p": 23.0, "u": "https://take.app/totosjoint/p/cmpchlfve00030bj6kqapt95s", "o": null, "w": null, "d": "35 pcs of wings with 5 signature sauces and fries."}, {"n": "BBQ Duo", "p": 17.0, "u": "https://take.app/totosjoint/p/cmp1dx4qs000206kqi4kmmhdm", "o": null, "w": null, "d": "2 BBQ beef or chicken burgers served with fries and BBQ dip on the side."}, {"n": "Make It Combo (French fries)", "p": 4.5, "u": "https://take.app/totosjoint/p/clyhnxr1q0001x3922na908mw", "o": null, "w": null, "d": "French fries + soft drink."}, {"n": "Make It Combo (curly fries)", "p": 6.25, "u": "https://take.app/totosjoint/p/cmp1c9npx000007ktfy3chehu", "o": null, "w": null, "d": "Imported curly fries + soft drink."}, {"n": "Make It Combo (wedges, drink)", "p": 6.0, "u": "https://take.app/totosjoint/p/cmq9kyqsw005p04glvmbent49", "o": null, "w": null, "d": ""}]}, {"cat": "Dips", "items": [{"n": "Ranch Sauce", "p": 1.0, "u": "https://take.app/totosjoint/p/cly8n00vg002230tic9j9uniu", "o": null, "w": null, "d": ""}, {"n": "Honey Mustard Sauce", "p": 1.0, "u": "https://take.app/totosjoint/p/cly8n0pig0034iujxe8q171kq", "o": null, "w": null, "d": ""}, {"n": "BBQ Sauce", "p": 1.0, "u": "https://take.app/totosjoint/p/cly8n18ei0046yryodt95j2mn", "o": null, "w": null, "d": ""}, {"n": "Cheddar Sauce", "p": 1.0, "u": "https://take.app/totosjoint/p/clygaeglx000ecfcsjta41sau", "o": null, "w": null, "d": ""}, {"n": "Truffle Sauce", "p": 1.0, "u": "https://take.app/totosjoint/p/clygaq290003najde4t47mls8", "o": null, "w": null, "d": ""}, {"n": "Toto's Sauce", "p": 1.0, "u": "https://take.app/totosjoint/p/clygaqzzs00absg74h588a3il", "o": null, "w": null, "d": ""}, {"n": "GM Sauce", "p": 1.0, "u": "https://take.app/totosjoint/p/clygarm1w000icfcse3wl5nrd", "o": null, "w": null, "d": ""}, {"n": "BangBang Sauce", "p": 1.0, "u": "https://take.app/totosjoint/p/clygap73v00a2sg74xwjt4nph", "o": null, "w": null, "d": ""}, {"n": "Chipotle Sauce", "p": 1.0, "u": "https://take.app/totosjoint/p/cmule4doq001b0agmc6q9532e", "o": null, "w": null, "d": ""}, {"n": "Hot Honey Sauce", "p": 1.0, "u": "https://take.app/totosjoint/p/cmule6syd00000agm4l3arthe", "o": null, "w": null, "d": ""}]}, {"cat": "Drinks", "items": [{"n": "Soft Drinks (bottle)", "p": 1.0, "u": "https://take.app/totosjoint/p/cly8m0u5p0007a7xa00ej06mu", "o": null, "w": null, "d": ""}, {"n": "Soft Drinks (can)", "p": 1.5, "u": "https://take.app/totosjoint/p/clyho0b40001bhr4fqn79q29h", "o": null, "w": null, "d": ""}, {"n": "Iced Tea", "p": 1.5, "u": "https://take.app/totosjoint/p/clygz8pzd003k13gm2rfrex5j", "o": null, "w": null, "d": ""}, {"n": "Sparkling Water", "p": 1.5, "u": "https://take.app/totosjoint/p/clygz7sjw0016c4xx51gkz7gf", "o": null, "w": null, "d": ""}, {"n": "Small Water", "p": 0.5, "u": "https://take.app/totosjoint/p/clygz88zb0019c4xxtet6z4kn", "o": null, "w": null, "d": ""}]}];
   const PH = {"The GM": "assets/food/cmuld9pns.jpg", "GM Sauce": "assets/food/cmuldq44z.jpg", "Truffle Sauce": "assets/food/cmuldsz0z.jpg", "BangBang Sauce": "assets/food/cmuldudl5.jpg", "Cheddar Sauce": "assets/food/cmuldvc0n.jpg", "BBQ Sauce": "assets/food/cmuldwtnp.jpg", "Honey Mustard Sauce": "assets/food/cmuldy84k.jpg", "Ranch Sauce": "assets/food/cmuldywta.jpg", "Chipotle Sauce": "assets/food/cmule33v6.jpg", "Hot Honey Sauce": "assets/food/cmule5sue.jpg", "Toto's Combo": "assets/food/cmupjmanm.jpg", "Mozzarella Sticks": "assets/food/cmupjoffh.jpg", "The Real Deal": "assets/food/cmupjr2hn.jpg", "Family Combo": "assets/food/cmupjwq4h.jpg", "BBQ Duo": "assets/food/cmp1dwt88.jpg", "Loaded Truffle": "assets/food/cmufmsr3o.jpg", "Loaded Fries": "assets/food/cmufn5qwk.jpg", "Beiruty Wrap": "assets/food/cmufn7kzy.jpg", "Mighty Munch Cheese Steak": "assets/food/cmufn93gd.jpg", "Triple Double Cheese": "assets/food/cmufndgzr.jpg", "Signature Swiss": "assets/food/cmufnhdbv.jpg", "The Chili": "assets/food/cmufnjj6h.jpg", "Mushtruffle": "assets/food/cmufno3u0.jpg", "Day Dreamer": "assets/food/cmufo0725.jpg", "Dip It Honey Mustard": "assets/food/cmufo5dgr.jpg", "The Cheesy": "assets/food/cmufo7thw.jpg", "Toto's Tray (3Ts)": "assets/food/cmufobmt0.jpg", "Mozzarella PULL": "assets/food/cmugq1vy4.jpg", "Wings Family Combo": "assets/food/cmugqhauz.jpg", "Chicken Wings": "assets/food/cmugqooup.jpg", "Curly Fries": "assets/food/cmugqwuar.jpg", "Strips Dose (regular or spicy)": "assets/food/cmuldj7qd.jpg", "Loaded Fries With Extra Chicken": "assets/food/cmufn5qwk.jpg"};
-  const EMO = { 'Starters': '🍟', 'New': '🍋', 'Wraps & Ciabatta': '🌯', 'Chicken Burgers': '🍔', 'Beef Burgers': '🍔', 'Meals': '🍗', 'Combos': '🍱', 'Dips': '🥣', 'Drinks': '🥤' };
+  const EMO = new Proxy({}, { get: () => '<img class="lgph" src="assets/logo.jpg" alt="">' });
   const all = {}; MENU.forEach(c => c.items.forEach(i => { all[i.n] = Object.assign({ cat: c.cat }, i); }));
   const usd = v => '$' + v.toFixed(2).replace(/\.00$/, '');
   const oid = n => n.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -388,13 +387,13 @@ html[dir=rtl] .mi .pr{text-align:left}
     mE: 'المنيو', mH: 'نقّي <em>أسدك.</em>', order3: 'اطلب أونلاين ←', mNote: 'الأسعار بالدولار. كبوس + لتطلب من صفحة الطلبات تبع توتو.',
     foot: 'المصيطبة، بيروت · Home of Lions · © 2026 Toto\'s Joint', order4: 'اطلب هلّق', dockMenu: 'المنيو',
     openNow: 'فاتحين هلّق', closedNow: 'مسكّرين · منفتح 12:30', kickOpen: 'فاتحين هلّق · المصيطبة، بيروت', kickClosed: 'منفتح 12:30 الضهر · المصيطبة',
-    orderThis: 'اطلبها ←', deal: 'عرض', langBtn: 'EN', wa: 'مرحبا Toto\'s! بدّي اطلب 🍔', save: 'وفّر',
+    orderThis: 'اطلبها ←', deal: 'عرض', langBtn: 'EN', wa: 'مرحبا Toto\'s! بدّي اطلب', save: 'وفّر',
     cats: { 'Starters': 'مقبّلات', 'New': 'جديد', 'Wraps & Ciabatta': 'راب وتشاباتا', 'Chicken Burgers': 'برغر دجاج', 'Beef Burgers': 'برغر لحمة', 'Meals': 'وجبات', 'Combos': 'كومبو', 'Dips': 'صوصات', 'Drinks': 'مشروبات' }
   };
   const EN = {
     ticker: tick(['Smash burgers', 'Crispy chicken', 'Loaded fries', 'Msaytbeh', 'Open till midnight']),
     openNow: 'Open now', closedNow: 'Closed · opens 12:30', kickOpen: 'Fet7in hala2 · Msaytbeh, Beirut', kickClosed: 'Opens 12:30 PM · Msaytbeh',
-    orderThis: 'Order this →', deal: 'Deal', langBtn: 'عربي', wa: 'Marhaba Toto\'s! Badde otlob 🍔', save: 'Save', cats: {}
+    orderThis: 'Order this →', deal: 'Deal', langBtn: 'عربي', wa: 'Marhaba Toto\'s! Badde otlob', save: 'Save', cats: {}
   };
   document.querySelectorAll('[data-k]').forEach(el => EN[el.dataset.k] = EN[el.dataset.k] || el.innerHTML);
   let lang = 'en'; try { lang = localStorage.getItem('toto-lang') || 'en'; } catch (e) {}
@@ -460,11 +459,36 @@ html[dir=rtl] .mi .pr{text-align:left}
     document.querySelectorAll('.chip').forEach((c, i) => c.classList.toggle('on', i === cur));
   }
 
+  /* ---------- lion claw gashes ---------- */
+  let gid = 0;
+  function gashSVG(W, H, n, o) {
+    o = o || {}; const id = 'g' + (++gid), out = [], marks = [], wMax = (o.w || .045) * Math.min(W, H) + 2;
+    for (let i = 0; i < n; i++) {
+      const sx = W * ((o.x0 || .16) + i * (o.gap || .17)) + (Math.random() - .5) * W * .02, sy = H * (o.y0 != null ? o.y0 : .02) + (i % 2) * H * .04;
+      const ex = sx + W * (o.dx || .2), ey = H * (o.y1 || .98) - (i % 2) * H * .05;
+      const mx = (sx + ex) / 2, my = (sy + ey) / 2, L = Math.hypot(ex - sx, ey - sy), px = -(ey - sy) / L, py = (ex - sx) / L;
+      const bend = (o.bend || .06) * L, w = wMax * (.8 + Math.random() * .35);
+      const cx = mx + px * bend, cy = my + py * bend;
+      const shape = k => `M${sx.toFixed(1)} ${sy.toFixed(1)} Q${(cx + px * w * 2 * k).toFixed(1)} ${(cy + py * w * 2 * k).toFixed(1)} ${ex.toFixed(1)} ${ey.toFixed(1)} Q${(cx - px * w * 2 * k).toFixed(1)} ${(cy - py * w * 2 * k).toFixed(1)} ${sx.toFixed(1)} ${sy.toFixed(1)}Z`;
+      out.push(`<path d="${shape(1.55)}" fill="#fff3dd" opacity=".9" transform="translate(-1.5 -1)"/><path d="${shape(1)}" fill="url(#${id}c)"/><path d="${shape(.35)}" fill="#000" opacity=".55"/>`);
+      marks.push(`<path class="mk" pathLength="1" stroke-width="${(w * 7).toFixed(1)}" d="M${sx} ${sy} Q${cx} ${cy} ${ex} ${ey}" style="animation-delay:${(o.delay || 0) + i * .07}s"/>`);
+    }
+    return `<defs><linearGradient id="${id}c" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2a0e04"/><stop offset=".5" stop-color="#0b0807"/><stop offset="1" stop-color="#3b1406"/></linearGradient>
+      <mask id="${id}m" maskUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}">${marks.join('')}</mask></defs><g mask="url(#${id}m)">${out.join('')}</g>`;
+  }
+  function heroClaw() {
+    const svg = document.getElementById('lclaw'), r = svg.getBoundingClientRect(); if (!r.width) return;
+    svg.setAttribute('viewBox', `0 0 ${r.width.toFixed(0)} ${r.height.toFixed(0)}`);
+    svg.innerHTML = gashSVG(r.width, r.height, 4, { x0: .14, gap: .2, dx: .12, w: .04, bend: .05, delay: .95 });
+    svg.classList.remove('go'); void svg.getBoundingClientRect(); svg.classList.add('go');
+  }
+
   /* ---------- hero ---------- */
   const lions = document.getElementById('lions');
   lions.querySelector('.w').innerHTML = [...'LIONS.'].map((c, i) => `<span class="ch" style="animation-delay:${.35 + i * .09}s">${c}</span>`).join('');
   document.querySelectorAll('.food').forEach(f => { const n = f.dataset.ph; if (PH[n]) f.innerHTML = `<img src="${PH[n]}" alt="${n}">`; });
-  requestAnimationFrame(() => { document.getElementById('hero').classList.add('in', 'shake'); lions.classList.add('go'); });
+  requestAnimationFrame(() => { document.getElementById('hero').classList.add('in', 'shake'); lions.classList.add('go'); heroClaw(); });
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => { const s = document.getElementById('lclaw'); if (s) { const r = s.getBoundingClientRect(); const vb = (s.getAttribute('viewBox') || '').split(' '); if (Math.abs(+vb[2] - r.width) > 4) { s.setAttribute('viewBox', `0 0 ${r.width.toFixed(0)} ${r.height.toFixed(0)}`); s.innerHTML = gashSVG(r.width, r.height, 4, { x0: .14, gap: .2, dx: .12, w: .04, bend: .05 }); s.classList.add('go'); } } });
   const foods = [...document.querySelectorAll('.food')];
   let mx = 0, my = 0;
   addEventListener('mousemove', e => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; floatFood(); });
@@ -523,21 +547,26 @@ html[dir=rtl] .mi .pr{text-align:left}
   const PAW = '<svg viewBox="0 0 24 24" fill="currentColor"><ellipse cx="12" cy="16" rx="5.2" ry="4.4"/><ellipse cx="5.6" cy="10.6" rx="2.1" ry="2.7" transform="rotate(-20 5.6 10.6)"/><ellipse cx="9.4" cy="6.6" rx="2.1" ry="2.8" transform="rotate(-6 9.4 6.6)"/><ellipse cx="14.6" cy="6.6" rx="2.1" ry="2.8" transform="rotate(6 14.6 6.6)"/><ellipse cx="18.4" cy="10.6" rx="2.1" ry="2.7" transform="rotate(20 18.4 10.6)"/></svg>';
   function claw(src) {
     const host = src && (src.closest('.mi, .cb, .lu-txt') || src); if (!host) return;
-    const c = document.createElement('span'); c.className = 'claw'; c.innerHTML = '<i></i><i></i><i></i>';
-    host.appendChild(c); setTimeout(() => c.remove(), 900);
+    const r = host.getBoundingClientRect(); if (!r.width) return;
+    const NS = 'http://www.w3.org/2000/svg', svg = document.createElementNS(NS, 'svg'); svg.setAttribute('class', 'tclaw gash');
+    svg.setAttribute('viewBox', `0 0 ${r.width.toFixed(0)} ${r.height.toFixed(0)}`); svg.setAttribute('preserveAspectRatio', 'none');
+    svg.innerHTML = gashSVG(r.width, r.height, 4, { x0: .3, gap: .11, dx: .14, w: .06, bend: .07, y0: .08, y1: .92 });
+    host.appendChild(svg); requestAnimationFrame(() => svg.classList.add('go')); setTimeout(() => svg.remove(), 1300);
   }
   Order.init({
     key: 'toto-cart', base: 'usd', rate: 89500, delivery: 2,
     lang: () => lang, fabIcon: PAW,
     onAdd: (it, src) => claw(src),
     onBrowse: () => { if (page !== 'menu') { location.hash = '#menu'; } },
-    emptyArt: '<div class="o-emo">🦁</div>',
-    doneArt: () => '<div class="o-emo o-pop">🦁</div>',
-    t: { en: { placed: 'Roar! Order in.', thanks: 'Sahtein', s2: 'Smashing it 🔥', deliveryNote: 'Delivery around Msaytbeh & Beirut.', pickupNote: 'Pick up from Bachir Jonblat St, Msaytbeh.' },
-         ar: { placed: 'وصل الطلب!', thanks: 'صحتين', s2: 'عم نسمَشها 🔥', deliveryNote: 'ديليفري بالمصيطبة وبيروت.', pickupNote: 'استلام من شارع بشير جنبلاط، المصيطبة.' } }
+    skin: 'toto', layout: 'start', fallbackImg: 'assets/logo.jpg',
+    emptyArt: '<img class="tt-logo" src="assets/logo.jpg" alt="">',
+    doneArt: () => '<div class="tt-stamp"><img src="assets/logo.jpg" alt=""><b>ROAR!</b></div>',
+    sheetDeco: '<div class="tt-edge" aria-hidden="true"></div>',
+    t: { en: { placed: 'Order ticket', yourOrder: 'Order ticket', viewOrder: 'Your ticket', thanks: 'Sahtein', s2: 'Smashing it', deliveryNote: 'Delivery around Msaytbeh & Beirut.', pickupNote: 'Pick up from Bachir Jonblat St, Msaytbeh.' },
+         ar: { placed: 'وصل الطلب!', thanks: 'صحتين', s2: 'عم نسمَشها', deliveryNote: 'ديليفري بالمصيطبة وبيروت.', pickupNote: 'استلام من شارع بشير جنبلاط، المصيطبة.' } }
   });
   document.addEventListener('click', e => { const a = e.target.closest('a[data-go="menu"]'); if (a && page === 'menu' && a.classList.contains('or')) { e.preventDefault(); e.stopImmediatePropagation(); Order.open(); } }, true);
-  Order.register(Object.values(all).map(it => ({ id: oid(it.n), n: it.n, p: it.p, img: PH[it.n] || null, emo: EMO[it.cat] })));
+  Order.register(Object.values(all).map(it => ({ id: oid(it.n), n: it.n, p: it.p, img: PH[it.n] || null })));
 
   apply(lang); route();
 })();
