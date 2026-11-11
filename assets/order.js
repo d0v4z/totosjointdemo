@@ -11,7 +11,7 @@
     check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m7.5 12.5 3 3 6-6.5"/></svg>'
   };
   O.icons = IC;
-  let C, items = {}, cart = {}, mode = 'delivery', table = '', pay = 'usd', step = 'cart';
+  let C, items = {}, cart = {}, mode = 'delivery', table = '', branch = '', S = {}, pay = 'usd', step = 'cart';
   const $ = (s, r = document) => r.querySelector(s);
   const T = k => { const d = C.t[C.lang()] || C.t.en; return d[k] != null ? d[k] : (C.t.en[k] != null ? C.t.en[k] : k); };
   const save = () => { try { localStorage.setItem(C.key, JSON.stringify(cart)); } catch (e) {} };
@@ -28,7 +28,7 @@
   const count = () => Object.values(cart).reduce((a, b) => a + b, 0);
   const sub = () => Object.entries(cart).reduce((a, [id, q]) => a + (items[id] ? items[id].p * q : 0), 0);
   const fee = () => (mode === 'delivery' && count()) ? C.delivery : 0;
-  const modes = () => C.modes || ['delivery', 'pickup', 'dinein'];
+  const modes = () => (C.modes || ['delivery', 'pickup', 'dinein']).filter(m => !S.modes || S.modes[m] !== false);
   const modeBar = () => `<div class="o-mode o-mode-${modes().length}" role="tablist">${modes().map(m => `<button data-m="${m}" class="${mode === m ? 'on' : ''}">${IC[m]}<span>${T(m)}</span></button>`).join('')}</div>`;
 
   O.register = list => { list.forEach(it => items[it.id] = it); Object.keys(cart).forEach(id => { if (!items[id]) delete cart[id]; }); refresh(); };
@@ -47,15 +47,16 @@
   /* ---------- steppers ---------- */
   function stepperHTML(id) {
     const q = O.qty(id);
+    if (items[id] && items[id].off) return `<span class="o-sold">${T('soldOut')}</span>`;
     if (!q) return `<button class="o-add" data-o="+" aria-label="${T('add')}"><span>${T('add')}</span><i>+</i></button>`;
     return `<button class="o-m" data-o="-" aria-label="−">−</button><b class="o-q">${q}</b><button class="o-p" data-o="+" aria-label="+">+</button>`;
   }
   function paintSteppers() {
     document.querySelectorAll('.o-step[data-oid]').forEach(el => {
-      const q = O.qty(el.dataset.oid), want = q ? 'on' : 'off';
+      const q = O.qty(el.dataset.oid), want = (items[el.dataset.oid] && items[el.dataset.oid].off) ? 'sold' : q ? 'on' : 'off';
       if (el.dataset.st === want && want === 'on') { const b = el.querySelector('.o-q'); if (b && b.textContent != q) { b.textContent = q; b.classList.remove('o-pop'); void b.offsetWidth; b.classList.add('o-pop'); } return; }
       if (el.dataset.st === want) return;
-      el.dataset.st = want; el.classList.toggle('on', !!q); el.innerHTML = stepperHTML(el.dataset.oid);
+      el.dataset.st = want; el.classList.toggle('on', want === 'on'); el.classList.toggle('sold', want === 'sold'); el.innerHTML = stepperHTML(el.dataset.oid);
     });
   }
   O.paint = paintSteppers;
@@ -143,9 +144,12 @@
         <div class="o-step on" data-oid="${id}" data-st="on">${stepperHTML(id)}</div></div>`; }).join('');
       body.innerHTML = (C.cartTop ? C.cartTop(cart, items) : '') + `<div class="o-rows">${rows}</div>
         <h5 class="o-sub">${T('how')}</h5>${modeBar()}
-        ${mode === 'delivery' ? `<p class="o-note">${T('deliveryNote')}</p>` : (C.branches && C.branches.length > 1 ? `<label class="o-lbl">${T('branch')}</label><select class="o-in" id="oBr">${C.branches.map(b => `<option>${b}</option>`).join('')}</select>` : `<p class="o-note">${T(mode + 'Note')}</p>`)}
+        <p class="o-note">${T(mode + 'Note')}</p>
+        ${C.branches && C.branches.length > 1 ? `<label class="o-lbl" for="oBr">${T(mode === 'delivery' ? 'branchFrom' : 'branch')}</label><select class="o-in" id="oBr">${C.branches.map(b => `<option${b === branch ? ' selected' : ''}>${b}</option>`).join('')}</select>` : ''}
         ${totalsHTML()}`;
       body.querySelectorAll('[data-m]').forEach(b => b.onclick = () => { mode = b.dataset.m; draw(); });
+      if ($('#oBr')) $('#oBr').onchange = e => { branch = e.target.value; };
+      if (S.paused) { ft.innerHTML = `<button class="o-cta" disabled style="opacity:.5;justify-content:center">${T('paused')}</button>`; return; }
       ft.innerHTML = `<button class="o-cta" id="oNext"><span>${T('checkout')}</span><b>${fUsd(sub() + fee())}</b></button>`;
       $('#oNext').onclick = () => { step = 'form'; draw(); $('#oSheet').scrollTop = 0; };
       return;
@@ -183,6 +187,12 @@
     step = 'done';
     const no = String(Math.floor(1000 + Math.random() * 9000)), tot = sub() + fee(), n = count();
     const lines = Object.entries(cart).map(([id, q]) => `${q}× ${items[id].n}`);
+    try {
+      const f = O._f || {}, k = C.key + '-orders', all = JSON.parse(localStorage.getItem(k) || '[]');
+      all.unshift({ no, time: Date.now(), branch: branch || (C.branches ? C.branches[0] : ''), mode, name: f.n || '', phone: f.p || '', address: f.a || '', table: f.t || '', notes: f.nt || '', pay,
+        items: Object.entries(cart).map(([id, q]) => ({ id, n: items[id].n, q, p: items[id].p })), sub: sub(), fee: fee(), total: tot, status: 'new', log: [{ s: 'new', t: Date.now() }], fromSite: true });
+      localStorage.setItem(k, JSON.stringify(all.slice(0, 200)));
+    } catch (e) {}
     C.onPlace && C.onPlace(cart, items, mode);
     $('#oTitle').textContent = T('placed');
     const stages = mode === 'delivery' ? [T('s1'), T('s2'), T('s3d'), T('s4d')] : mode === 'dinein' ? [T('s1'), T('s2'), T('s3i')] : [T('s1'), T('s2'), T('s3p')];
@@ -205,20 +215,23 @@
   const DEF = {
     en: { add: 'Add', lbp: 'LBP', viewOrder: 'View order', yourOrder: 'Your order', subtotal: 'Subtotal', deliveryFee: 'Delivery', pickup: 'Pick up', free: 'Free', total: 'Total',
       demo: 'DEMO', empty: 'Your order is empty', emptySub: 'Add something tasty from the menu.', browse: 'Browse the menu', delivery: 'Delivery',
-      deliveryNote: 'Delivered hot to your door.', pickupNote: 'Ready for you at the shop.', dinein: 'Dine in', dineinNote: 'Order from your seat, we bring it to your table.', how: 'How do you want it?', table: 'Table', tablePh: 'Table number (optional)', s3i: 'Served at your table', branch: 'Pick up from', checkout: 'Checkout', back: 'Back',
+      deliveryNote: 'Delivered hot to your door.', branchFrom: 'Order from branch', paused: 'Not taking orders right now', soldOut: 'Sold out', pickupNote: 'Ready for you at the shop.', dinein: 'Dine in', dineinNote: 'Order from your seat, we bring it to your table.', how: 'How do you want it?', table: 'Table', tablePh: 'Table number (optional)', s3i: 'Served at your table', branch: 'Pick up from', checkout: 'Checkout', back: 'Back',
       name: 'Name', phone: 'Phone', address: 'Address', addressPh: 'Area, street, building, floor', payWith: 'Pay with', cashUsd: 'Cash $', cashLbp: 'Cash LBP',
       notes: 'Notes', notesPh: 'No onions, extra sauce…', youPay: 'You pay', place: 'Place order', errName: 'Write your name.', errPhone: 'Write a valid phone number.',
       errAddr: 'Write your address.', placed: 'Order placed!', thanks: 'Thank you', orderNo: 'Order', s1: 'Order received', s2: 'Preparing',
       s3d: 'On the way', s4d: 'Delivered', s3p: 'Ready for pick up', itemsWord: 'items', demoNote: 'This is a demo: no real order was sent.', backMenu: 'Back to the menu' },
     ar: { add: 'زيد', lbp: 'ل.ل', viewOrder: 'شوف طلبك', yourOrder: 'طلبك', subtotal: 'المجموع', deliveryFee: 'الديليفري', pickup: 'استلام من المحل', free: 'مجاناً', total: 'المجموع الكلي',
       demo: 'تجريبي', empty: 'طلبك فاضي', emptySub: 'زيد شي طيّب من المنيو.', browse: 'شوف المنيو', delivery: 'ديليفري',
-      deliveryNote: 'بيوصلك سخن لعند بابك.', pickupNote: 'بيكون جاهز إلك بالمحل.', dinein: 'بالمطعم', dineinNote: 'اطلب من مطرحك، ومنجيبلك ياه عالطاولة.', how: 'كيف بدّك ياه؟', table: 'طاولة', tablePh: 'رقم الطاولة (اختياري)', s3i: 'عالطاولة', branch: 'استلام من', checkout: 'كمّل الطلب', back: 'رجوع',
+      deliveryNote: 'بيوصلك سخن لعند بابك.', branchFrom: 'من أي فرع', paused: 'ما عم ناخد طلبات هلّق', soldOut: 'خلص', pickupNote: 'بيكون جاهز إلك بالمحل.', dinein: 'بالمطعم', dineinNote: 'اطلب من مطرحك، ومنجيبلك ياه عالطاولة.', how: 'كيف بدّك ياه؟', table: 'طاولة', tablePh: 'رقم الطاولة (اختياري)', s3i: 'عالطاولة', branch: 'استلام من', checkout: 'كمّل الطلب', back: 'رجوع',
       name: 'الاسم', phone: 'رقم التلفون', address: 'العنوان', addressPh: 'المنطقة، الشارع، البناية، الطابق', payWith: 'الدفع', cashUsd: 'كاش $', cashLbp: 'كاش ل.ل',
       notes: 'ملاحظات', notesPh: 'بلا بصل، زيادة صوص…', youPay: 'بتدفع', place: 'أكّد الطلب', errName: 'اكتب اسمك.', errPhone: 'اكتب رقم تلفون صحيح.',
       errAddr: 'اكتب عنوانك.', placed: 'وصل طلبك!', thanks: 'شكراً', orderNo: 'طلب رقم', s1: 'وصل الطلب', s2: 'عم نحضّرو',
       s3d: 'عالطريق', s4d: 'وصل', s3p: 'جاهز للاستلام', itemsWord: 'أغراض', demoNote: 'هيدا تجريبي: ما انبعت أي طلب حقيقي.', backMenu: 'رجوع عالمنيو' }
   };
-  O.init = cfg => { C = cfg; const t = cfg.t || {}; C.t = { en: Object.assign({}, DEF.en, t.en), ar: Object.assign({}, DEF.ar, t.ar) }; load(); shell(); refresh(); };
+  O.init = cfg => { C = cfg; try { S = JSON.parse(localStorage.getItem(cfg.key + '-settings') || '{}') || {}; } catch (e) { S = {}; }
+    if (S.delivery != null) C.delivery = +S.delivery; if (S.rate) C.rate = +S.rate; branch = C.branches ? C.branches[0] : ''; if (S.modes && S.modes[mode] === false) mode = (C.modes || ['delivery', 'pickup', 'dinein']).find(m => S.modes[m] !== false) || 'pickup';
+    const t = cfg.t || {}; C.t = { en: Object.assign({}, DEF.en, t.en), ar: Object.assign({}, DEF.ar, t.ar) }; load(); shell(); refresh(); };
   O.relabel = () => { document.querySelectorAll('.o-step[data-oid]').forEach(e => e.dataset.st = ''); refresh(); };
+  O.overrides = key => { try { return JSON.parse(localStorage.getItem(key + '-menu') || '{}') || {}; } catch (e) { return {}; } };
   window.Order = O;
 })();

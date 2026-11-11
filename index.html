@@ -373,6 +373,9 @@ html[dir=rtl] .mi .pr{text-align:left}
   const all = {}; MENU.forEach(c => c.items.forEach(i => { all[i.n] = Object.assign({ cat: c.cat }, i); }));
   const usd = v => '$' + v.toFixed(2).replace(/\.00$/, '');
   const oid = n => n.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  /* admin panel changes (price, photo, sold out) saved in this browser */
+  const OVR = (window.Order && Order.overrides) ? Order.overrides('toto-cart') : {};
+  MENU.forEach(c => c.items.forEach(it => { const o = OVR[oid(it.n)]; if (!o) return; if (o.p != null) it.p = o.p; if (o.img) PH[it.n] = o.img; it.off = !!o.off; if (all[it.n]) Object.assign(all[it.n], { p: it.p, off: it.off }); }));
   const ph = (n, cls, emo) => PH[n] ? `<img class="${cls}" src="${PH[n]}" alt="${n}" loading="lazy">` : `<span class="${cls} e">${emo}</span>`;
 
   /* ---------- text ---------- */
@@ -566,7 +569,7 @@ html[dir=rtl] .mi .pr{text-align:left}
          ar: { placed: 'وصل الطلب!', thanks: 'صحتين', s2: 'عم نسمَشها', deliveryNote: 'ديليفري بالمصيطبة وبيروت.', pickupNote: 'استلام من شارع بشير جنبلاط، المصيطبة.' } }
   });
   document.addEventListener('click', e => { const a = e.target.closest('a[data-go="menu"]'); if (a && page === 'menu' && a.classList.contains('or')) { e.preventDefault(); e.stopImmediatePropagation(); Order.open(); } }, true);
-  Order.register(Object.values(all).map(it => ({ id: oid(it.n), n: it.n, p: it.p, img: PH[it.n] || null })));
+  Order.register(Object.values(all).map(it => ({ id: oid(it.n), n: it.n, p: it.p, img: PH[it.n] || null, off: !!it.off })));
 
   apply(lang); route();
 })();

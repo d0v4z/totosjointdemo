@@ -93,14 +93,16 @@ select.o-in{appearance:none}
 .o-fly-dot{background:var(--o-acc);width:30px;height:30px}
 
 /* layouts */
-.o-l-modal .o-sheet{top:50%;bottom:auto;left:50%;right:auto;inset-inline-end:auto;width:min(520px,94vw);max-height:88vh;border-radius:24px;transform:translate(-50%,-46%) scale(.94)!important;opacity:0;pointer-events:none;transition:transform .4s cubic-bezier(.2,1.2,.4,1),opacity .3s}
+.o-l-modal .o-sheet{inset-inline-end:auto;top:50%;bottom:auto;left:50%;right:auto;width:min(520px,94vw);max-height:88vh;border-radius:24px;transform:translate(-50%,-46%) scale(.94)!important;opacity:0;pointer-events:none;transition:transform .4s cubic-bezier(.2,1.2,.4,1),opacity .3s}
 html.o-open .o-l-modal .o-sheet{transform:translate(-50%,-50%) scale(1)!important;opacity:1;pointer-events:auto}
 .o-l-start .o-sheet{inset-inline-end:auto;inset-inline-start:0;transform:translateX(-105%)}
 [dir=rtl] .o-l-start .o-sheet{transform:translateX(105%)}
-.o-l-sheet .o-sheet{top:auto;left:50%;right:auto;inset-inline-end:auto;width:min(620px,100%);height:min(88svh,820px);border-radius:0;transform:translate(-50%,105%)!important}
+.o-l-sheet .o-sheet{inset-inline-end:auto;top:auto;left:50%;right:auto;width:min(620px,100%);height:min(88svh,820px);border-radius:0;transform:translate(-50%,105%)!important}
 html.o-open .o-l-sheet .o-sheet{transform:translate(-50%,0)!important}
 @media (max-width:640px){
-  .o-l-modal .o-sheet{top:auto;bottom:0;left:0;width:100%;max-height:none;height:92svh;border-radius:26px 26px 0 0;transform:translateY(105%)!important;opacity:1;pointer-events:auto}
+  .o-l-modal .o-sheet{inset-inline-end:auto;top:auto;bottom:0;left:0;right:auto;width:100%;max-height:none;height:92svh;border-radius:26px 26px 0 0;transform:translateY(105%)!important;opacity:1;pointer-events:auto}
   html.o-open .o-l-modal .o-sheet{transform:none!important}
   .o-l-start .o-sheet,[dir=rtl] .o-l-start .o-sheet{transform:translateY(105%)}
 }
+
+.o-step.sold{background:none;border-style:dashed;opacity:.7}.o-sold{padding:0 14px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}

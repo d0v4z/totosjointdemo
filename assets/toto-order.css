@@ -75,3 +75,5 @@ html[dir=rtl] .mi .pr{align-items:flex-start}
 .tt-stamp img{width:76px;height:76px;border-radius:50%;object-fit:cover}
 .tt-stamp b{position:absolute;bottom:10px;font-family:var(--slab);font-weight:400;color:#f7941d;font-size:20px;letter-spacing:.1em;background:#f3e7d3;padding:0 6px}
 @keyframes ttStamp{from{transform:rotate(-30deg) scale(2.4);opacity:0;filter:blur(4px)}70%{transform:rotate(-12deg) scale(.94);opacity:1;filter:none}to{transform:rotate(-14deg) scale(1)}}
+
+.mi:has(.o-step.sold),.cb:has(.o-step.sold){opacity:.5}
