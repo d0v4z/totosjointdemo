@@ -62,7 +62,8 @@
     const a = src.getBoundingClientRect(), b = fab.getBoundingClientRect();
     const img = src.matches && src.matches('[data-oimg]') ? src.querySelector('img') : null;
     const g = document.createElement('div'); g.className = 'o-fly';
-    if (img) { const i = img.cloneNode(); i.removeAttribute('loading'); g.appendChild(i); } else g.textContent = it.emo || '🍔';
+    if (it.fly) { const i = new Image(); i.src = it.fly; g.classList.add('o-fly-pk'); g.appendChild(i); }
+    else if (img) { const i = img.cloneNode(); i.removeAttribute('loading'); g.appendChild(i); } else g.textContent = it.emo || '🍔';
     document.body.appendChild(g);
     const sx = a.left + a.width / 2 - 30, sy = a.top + a.height / 2 - 30, ex = b.left + b.width / 2 - 30, ey = b.top + b.height / 2 - 30;
     const mx = (sx + ex) / 2, my = Math.min(sy, ey) - 140;
