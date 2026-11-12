@@ -73,15 +73,20 @@ html[dir=ltr] .slogan{text-align:left}
 .fade{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease}
 .in .fade{opacity:1;transform:none}
 .in .fade.d0{transition-delay:.1s}.in .fade.d1{transition-delay:1.15s}.in .fade.d2{transition-delay:1.3s}.in .fade.d3{transition-delay:1.45s}.in .fade.d4{transition-delay:1.25s}
-/* hero product card */
-.hcard{position:relative;background:#fff;color:#160d03;border-radius:28px;overflow:hidden;box-shadow:0 40px 80px -30px rgba(0,0,0,.8)}
-.hcard img.ph{width:100%;aspect-ratio:1/1;object-fit:cover}
-@media (max-width:959px){.hcard img.ph{aspect-ratio:5/4}}
-.hcard .tag{position:absolute;top:14px;inset-inline-start:14px;background:#160d03;color:var(--or);font-family:var(--slab);font-size:14px;letter-spacing:.08em;padding:6px 12px;border-radius:999px}
-.hcard .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px 16px;border-top:1px solid #eee}
-.hcard .bar h3{font-family:var(--slab);font-weight:400;font-size:24px;line-height:1;direction:ltr}
-.hcard .bar b{display:block;font-family:var(--slab);font-weight:400;font-size:20px;color:#c86f00;margin-top:4px;direction:ltr;text-align:start}
-.hcard .o-step{flex:none}
+/* badge + floating food */
+.stage{position:relative;height:clamp(360px,44vw,560px)}
+.badge{position:absolute;left:50%;top:50%;width:min(62%,320px);aspect-ratio:1;transform:translate(-50%,-50%)}
+.badge .logo{position:absolute;inset:16%;border-radius:50%;background:#fff;box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 0 6px var(--ink),0 0 0 8px var(--or)}
+.badge .logo img{width:100%;height:100%;border-radius:50%}
+.badge svg{position:absolute;inset:0;width:100%;height:100%;animation:spin 22s linear infinite}
+.badge text{font-family:var(--slab);font-size:14px;letter-spacing:5px;fill:var(--cream)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.food{position:absolute;width:var(--s);aspect-ratio:1;border-radius:50%;overflow:hidden;background:#fff;box-shadow:0 24px 60px rgba(0,0,0,.6),0 0 0 4px var(--ink),0 0 0 6px rgba(247,148,29,.6);will-change:transform}
+.food img{width:100%;height:100%;object-fit:cover}
+.food.f1{--s:clamp(120px,15vw,190px);left:2%;top:0}
+.food.f2{--s:clamp(104px,13vw,160px);right:0;top:12%}
+.food.f3{--s:clamp(112px,14vw,180px);right:6%;bottom:0}
+.food.f4{--s:clamp(88px,10vw,128px);left:6%;bottom:6%}
 
 /* ticker */
 .ticker{background:var(--or);color:#160d03;overflow:hidden;direction:ltr}
@@ -104,11 +109,25 @@ html[dir=rtl] .h2{font-family:var(--ar);font-weight:900;line-height:1.15;text-tr
 .rv{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1)}
 .rv.in{opacity:1;transform:none}
 
-/* lineup: swipe cards */
-.lrow{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;margin:26px -18px 0;padding:6px 18px 24px;scrollbar-width:none;overscroll-behavior-x:contain}
-.lrow::-webkit-scrollbar{display:none}
-.lc{position:relative;flex:0 0 76%;max-width:320px;scroll-snap-align:start;border-radius:24px;overflow:hidden;background:var(--char);border:1px solid var(--line);display:flex;flex-direction:column;transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .3s}
-@media (min-width:960px){.lc{flex-basis:calc((100% - 56px)/4.3)}}
+/* lineup: pinned, vertical scroll slides the cards sideways */
+.lu{position:relative}
+.lu-pin{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:18px;padding-top:56px}
+.lu-bg{position:absolute;left:0;top:52%;transform:translateY(-50%);white-space:nowrap;font-family:var(--slab);font-size:clamp(140px,26vw,320px);line-height:1;color:transparent;-webkit-text-stroke:1.5px rgba(247,148,29,.15);pointer-events:none;direction:ltr;will-change:transform;text-transform:uppercase}
+.lrow{position:relative;display:flex;gap:14px;width:max-content;padding-inline:max(18px,calc((100vw - 1120px)/2));will-change:transform}
+.lu-prog{display:flex;align-items:center;gap:12px}
+.lu-prog::before{content:"";flex:1;height:3px;border-radius:3px;background:rgba(245,237,224,.12)}
+.lu-prog i{position:absolute;inset-inline-start:max(0px,calc((100% - min(1120px,100% - 36px))/2));height:3px;border-radius:3px;background:var(--or);width:0}
+.lu-prog{position:relative}
+.lu-prog span{font-family:var(--slab);font-size:16px;letter-spacing:.08em;color:var(--or);min-width:64px;text-align:end}
+.lc{flex:0 0 min(72vw,300px)}
+@media (min-width:960px){.lc{flex-basis:320px}}
+.lc{transition:transform .5s cubic-bezier(.2,.8,.2,1),border-color .3s,opacity .5s}
+.lu .lc:not(.cur){transform:scale(.94);opacity:.75}
+.lu .lc.cur{border-color:rgba(247,148,29,.6)}
+.lc .ph{aspect-ratio:1/1}
+@media (max-height:740px){.lc .ph{aspect-ratio:5/4}}
+/* (cards) */
+.lc{position:relative;border-radius:24px;overflow:hidden;background:var(--char);border:1px solid var(--line);display:flex;flex-direction:column;transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .3s}
 .lc:hover{transform:translateY(-6px);border-color:rgba(247,148,29,.5)}
 .lc:has(.o-step.on){border-color:var(--or)}
 .lc .ph{background:#fff;aspect-ratio:1/1;overflow:hidden}
@@ -239,17 +258,29 @@ html[dir=rtl] .mi .pr{text-align:left}
           <a class="btn gh" href="#menu" data-go="menu" data-k="seeMenu">Shouf el menu</a>
         </div>
       </div>
-      <div class="hcard fade d4" id="hcard" data-oimg></div>
+      <div class="stage fade d0" id="stage">
+        <div class="badge">
+          <svg viewBox="0 0 200 200"><defs><path id="ring" d="M100,100 m-86,0 a86,86 0 1,1 172,0 a86,86 0 1,1 -172,0"/></defs>
+            <text><textPath href="#ring">★ HOME OF LIONS ★ BURGERS AND MORE ★ MSAYTBEH BEIRUT </textPath></text></svg>
+          <div class="logo"><img src="assets/logo.jpg" alt=""></div>
+        </div>
+        <div class="food f1" data-d="1.2" data-ph="Mushtruffle"></div>
+        <div class="food f2" data-d="-.8" data-ph="Toto's Tray (3Ts)"></div>
+        <div class="food f3" data-d="1.6" data-ph="The GM"></div>
+        <div class="food f4" data-d="-1.2" data-ph="Mozzarella PULL"></div>
+      </div>
     </div>
   </header>
 
   <div class="ticker" aria-hidden="true"><div class="t" data-k="ticker"></div></div>
 
-  <section class="sec" id="lineup">
-    <div class="wrap">
-      <div class="shead"><div><div class="eye rv" data-k="luE">The Lineup</div><h2 class="h2 rv" data-k="luH">The big <em>five.</em></h2></div>
+  <section class="lu" id="lineup">
+    <div class="lu-pin">
+      <div class="lu-bg" id="luBg" aria-hidden="true">HOME OF LIONS · HOME OF LIONS ·</div>
+      <div class="wrap shead"><div><div class="eye" data-k="luE">The Lineup</div><h2 class="h2" data-k="luH">The big <em>five.</em></h2></div>
         <a class="more" href="#menu" data-go="menu" data-k="fullMenu">Full menu →</a></div>
       <div class="lrow" id="lrow"></div>
+      <div class="wrap lu-prog"><i id="luBar"></i><span class="en" id="luNum">01 / 05</span></div>
     </div>
   </section>
 
@@ -368,17 +399,31 @@ html[dir=rtl] .mi .pr{text-align:left}
 
   /* ---------- lineup (swipe cards) + hero card ---------- */
   const LINE = ["Toto's Tray (3Ts)", 'The GM', 'Mushtruffle', 'Triple Double Cheese', 'Loaded Truffle'];
-  const HERO = 'Triple Double Cheese';
   function buildLineup() {
     document.getElementById('lrow').innerHTML = LINE.map((n, i) => { const it = all[n];
       return `<div class="lc" data-oimg><div class="ph">${PH[n] ? `<img src="${PH[n]}" alt="${n}" loading="lazy">` : EMO[it.cat]}</div><span class="n">0${i + 1}</span>
         <div class="bd"><small>${catName(it.cat)}</small><h3>${n.replace(/\s*\(.*\)/, '')}</h3>
         <div class="row"><span><b>${usd(it.p)}</b>${it.o && it.o > it.p ? `<s>${usd(it.o)}</s>` : ''}</span><div class="o-step" data-oid="${oid(n)}"></div></div></div></div>`; }).join('');
-    const h = all[HERO];
-    document.getElementById('hcard').innerHTML = `<img class="ph" src="${PH[HERO]}" alt="${HERO}"><span class="tag">${lang === 'ar' ? 'الأقوى' : 'KING OF THE JOINT'}</span>
-      <div class="bar"><div><h3>${HERO}</h3><b>${usd(h.p)}</b></div><div class="o-step" data-oid="${oid(HERO)}"></div></div>`;
+    sizeLineup();
   }
-  function lineup() {}
+  let luDist = 0;
+  function sizeLineup() {
+    const sec = document.getElementById('lineup'), row = document.getElementById('lrow');
+    luDist = Math.max(0, row.scrollWidth - innerWidth);
+    sec.style.height = (innerHeight + luDist * 1.15) + 'px'; lineup();
+  }
+  function lineup() {
+    if (page !== 'home') return;
+    const sec = document.getElementById('lineup'), row = document.getElementById('lrow'), r = sec.getBoundingClientRect();
+    const span = sec.offsetHeight - innerHeight, p = span > 0 ? Math.min(1, Math.max(0, -r.top / span)) : 0;
+    const dir = document.documentElement.dir === 'rtl' ? 1 : -1;
+    row.style.transform = `translateX(${dir * p * luDist}px)`;
+    document.getElementById('luBg').style.transform = `translate(${-p * 35}%, -50%)`;
+    document.getElementById('luBar').style.width = `calc((min(1120px, 100vw - 36px) - 80px) * ${p.toFixed(4)})`;
+    const n = Math.min(LINE.length, 1 + Math.round(p * (LINE.length - 1)));
+    document.getElementById('luNum').textContent = '0' + n + ' / 0' + LINE.length;
+    [...row.children].forEach((c, i) => c.classList.toggle('cur', i === n - 1));
+  }
 
   /* ---------- combos ---------- */
   const COMBOS = ["Toto's Combo", 'BBQ Duo', 'Wings Family Combo', 'Family Combo'];
@@ -437,7 +482,12 @@ html[dir=rtl] .mi .pr{text-align:left}
   lions.querySelector('.w').innerHTML = [...'LIONS.'].map((c, i) => `<span class="ch" style="animation-delay:${.35 + i * .09}s">${c}</span>`).join('');
   requestAnimationFrame(() => { document.getElementById('hero').classList.add('in', 'shake'); lions.classList.add('go'); heroClaw(); });
   (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => { const s = document.getElementById('lclaw'); if (s) { const r = s.getBoundingClientRect(); const vb = (s.getAttribute('viewBox') || '').split(' '); if (Math.abs(+vb[2] - r.width) > 4) { s.setAttribute('viewBox', `0 0 ${r.width.toFixed(0)} ${r.height.toFixed(0)}`); s.innerHTML = gashSVG(r.width, r.height, 4, { x0: .14, gap: .2, dx: .12, w: .04, bend: .05 }); s.classList.add('go'); } } });
-  function floatFood() {}
+  document.querySelectorAll('.food').forEach(f => { const n = f.dataset.ph; if (PH[n]) f.innerHTML = `<img src="${PH[n]}" alt="${n}">`; });
+  const foods = [...document.querySelectorAll('.food')];
+  let mx = 0, my = 0;
+  addEventListener('mousemove', e => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; floatFood(); });
+  function floatFood() { if (page !== 'home') return; const y = scrollY;
+    foods.forEach(f => { const d = +f.dataset.d; f.style.transform = `translate(${mx * 30 * d}px, ${my * 30 * d - y * .12 * d}px) rotate(${y * .02 * d}deg)`; }); }
 
   /* ---------- language ---------- */
   function apply(l) {
@@ -483,14 +533,14 @@ html[dir=rtl] .mi .pr{text-align:left}
     dock.classList.toggle('up', scrollY > innerHeight * .5 || page === 'menu');
     lineup(); floatFood(); syncChips(); }
   addEventListener('scroll', () => { if (!tk) { tk = true; requestAnimationFrame(onScroll); } }, { passive: true });
-  addEventListener('resize', onScroll);
+  addEventListener('resize', () => { sizeLineup(); onScroll(); });
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
   document.querySelectorAll('.rv').forEach((el, i) => { el.style.transitionDelay = (i % 3) * 80 + 'ms'; io.observe(el); });
 
   /* ---------- ordering (demo) ---------- */
   const PAW = '<svg viewBox="0 0 24 24" fill="currentColor"><ellipse cx="12" cy="16" rx="5.2" ry="4.4"/><ellipse cx="5.6" cy="10.6" rx="2.1" ry="2.7" transform="rotate(-20 5.6 10.6)"/><ellipse cx="9.4" cy="6.6" rx="2.1" ry="2.8" transform="rotate(-6 9.4 6.6)"/><ellipse cx="14.6" cy="6.6" rx="2.1" ry="2.8" transform="rotate(6 14.6 6.6)"/><ellipse cx="18.4" cy="10.6" rx="2.1" ry="2.7" transform="rotate(20 18.4 10.6)"/></svg>';
   function claw(src) {
-    const host = src && (src.closest('.mi, .cb, .lc, .hcard') || src); if (!host) return;
+    const host = src && (src.closest('.mi, .cb, .lc') || src); if (!host) return;
     const r = host.getBoundingClientRect(); if (!r.width) return;
     const NS = 'http://www.w3.org/2000/svg', svg = document.createElementNS(NS, 'svg'); svg.setAttribute('class', 'tclaw gash');
     svg.setAttribute('viewBox', `0 0 ${r.width.toFixed(0)} ${r.height.toFixed(0)}`); svg.setAttribute('preserveAspectRatio', 'none');
@@ -513,6 +563,7 @@ html[dir=rtl] .mi .pr{text-align:left}
   Order.register(Object.values(all).map(it => ({ id: oid(it.n), n: it.n, p: it.p, img: PH[it.n] || null, off: !!it.off })));
 
   apply(lang); route();
+  addEventListener('load', sizeLineup);
 })();
 </script>
 </body>
